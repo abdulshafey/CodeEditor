@@ -1,40 +1,30 @@
 "use client";
 import Logo from "@/components/Logo";
+import TextAnimationHeading from "@/components/TextAnimationHeading";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { TypeAnimation } from "react-type-animation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-gradient-to-b via-white from-white to-primary overflow-hidden">
       <header className="h-20 flex items-center">
         <div className="container px-4 mx-auto flex items-center justify-between gap-4">
           <Logo />
           <nav>
-            <Button>Login</Button>
+            <Button
+              className="cursor-pointer"
+              onClick={() => router.push("/login")}
+            >
+              Login
+            </Button>
           </nav>
         </div>
       </header>
 
       {/* text */}
-      <div className="mx-auto text-2xl lg:text-5xl my-6 flex flex-col gap-3 lg:gap-5 font-bold text-center">
-        <div className="text-primary drop-shadow-md">Build Space</div>
-        <div className="w-fit mx-auto text-center">
-          <TypeAnimation
-            sequence={[
-              "Your Team",
-              1000, // wait 1s before replacing "Mice" with "Hamsters"
-              "Your Ideas",
-              1000,
-              "One Editor",
-              1000,
-            ]}
-            wrapper="span"
-            speed={50}
-            repeat={Infinity}
-          />
-        </div>
-      </div>
+      <TextAnimationHeading classNameAnimation="mx-auto" />
 
       {/***dashboard landing image */}
       <div className="mx-auto w-fit shadow-lg">
