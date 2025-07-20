@@ -13,7 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useToast } from "@/components/ui/ToastProvider";
+import Axios from "@/lib/Axios";
 
 const formSchema = z
   .object({
@@ -38,14 +41,34 @@ const RegisterPage = () => {
     resolver: zodResolver(formSchema),
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { showToast } = useToast();
+  const router = useRouter();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    console.log(values);
-    setTimeout(() => {
+    const payload = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    try {
+      setIsLoading(true);
+      const response = await Axios.post("api/auth/register", payload);
+      if (response.status === 201) {
+        console.log(response);
+
+        showToast(response.data.message, "success");
+        form.reset();
+        router.push("/login");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
+
+      showToast(error?.response?.data?.error);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   }
 
   return (

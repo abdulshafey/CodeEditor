@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   return (
     <div className="lg:p-10 space-y-7">
-      <h1 className="text-xl font-semibold text-center">Create Account</h1>
+      <h1 className="text-xl font-semibold text-center">Login</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
