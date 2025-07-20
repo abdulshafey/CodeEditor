@@ -15,25 +15,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-const formSchema = z
-  .object({
-    name: z.string({ message: "Name is required" }).min(3),
-    email: z.string({ message: "Email is required" }).email().min(5).max(50),
-    password: z
-      .string({ message: "Password is required" })
-      .min(8, { message: "Password must have at least 8 Characters" })
-      .regex(/[A-z]/, "Password must have  atleast One Uppercase")
-      .regex(/[a-z]/, "Password must have atleast one Lowercase")
-      .regex(/[0-9]/, "Password must have atleast one Number")
-      .regex(/[@#$%^&*]/, "Password must have atleast one special Character"),
-    confirmPassword: z.string({ message: "Confirm password is required" }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password and Confirm Password must be same",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  email: z.string({ message: "Email is required" }).email().min(5).max(50),
+  password: z
+    .string({ message: "Password is required" })
+    .min(8, { message: "Password must have at least 8 Characters" })
+    .regex(/[A-z]/, "Password must have  atleast One Uppercase")
+    .regex(/[a-z]/, "Password must have atleast one Lowercase")
+    .regex(/[0-9]/, "Password must have atleast one Number")
+    .regex(/[@#$%^&*]/, "Password must have atleast one special Character"),
+});
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -56,24 +49,6 @@ const RegisterPage = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 max-w-md mx-auto"
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Your Name"
-                    {...field}
-                    disabled={isLoading}
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="email"
@@ -111,40 +86,21 @@ const RegisterPage = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Your Confirm Password"
-                    {...field}
-                    disabled={isLoading}
-                    type="password"
-                    value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <Button
             disabled={isLoading}
             type="submit"
             className="w-full cursor-pointer"
           >
-            {isLoading ? "Loading..." : "Create Account"}
+            {isLoading ? "Loading..." : "Login"}
           </Button>
         </form>
       </Form>
 
       <div className="max-w-md mx-auto">
         <p>
-          Already have an account ?{" "}
-          <Link href={"/login"} className="text-primary drop-shadow-md">
-            Login
+          Don&apos;t have an account ?
+          <Link href={"/register"} className="text-primary drop-shadow-md ml-1">
+            Create Here
           </Link>
         </p>
       </div>
@@ -152,4 +108,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
